@@ -35,7 +35,7 @@ export default function TaskTable({ tasks, onAdd, onUpdate, onDelete }: Props) {
       const { id, ...rest } = value as Task;
       onUpdate(id, rest);
     } else {
-      onAdd(value as Omit<Task,  'id' | 'createdAt' | 'completedAt'>);
+      onAdd(value);
     }
   };
 

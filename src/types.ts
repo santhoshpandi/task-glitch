@@ -9,7 +9,7 @@ export interface Task {
   priority: Priority;
   status: Status;
   notes?: string;
-  createdAt: string; // ISO date string
+  createdAt?: string; // ISO date string
   completedAt?: string; // ISO date string if Done
 }
 
