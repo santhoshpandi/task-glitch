@@ -3,7 +3,6 @@ import { Task } from '@/types';
 export function toCSV(tasks: ReadonlyArray<Task>): string {
   // Fix handling with stabled headers
   const headers = Object.keys(tasks[0]) as (keyof Task)[];
-  console.log(headers)
   const rows = tasks.map(t => [
     t.id,
     escapeCsv(t.title),
