@@ -23,6 +23,7 @@ interface UseTasksState {
   updateTask: (id: string, patch: Partial<Task>) => void;
   deleteTask: (id: string) => void;
   undoDelete: () => void;
+  closeUndoDelete: () => void;
 }
 
 const INITIAL_METRICS: Metrics = {
@@ -39,6 +40,8 @@ export function useTasks(): UseTasksState {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastDeleted, setLastDeleted] = useState<Task | null>(null);
+  // Fix: added isDeleted Flag
+  const [isDeleted, setIsDeleted] = useState<boolean>(false)
   const fetchedRef = useRef(false);
 
   function normalizeTasks(input: any[]): Task[] {
@@ -135,18 +138,29 @@ export function useTasks(): UseTasksState {
   const deleteTask = useCallback((id: string) => {
     setTasks(prev => {
       const target = prev.find(t => t.id === id) || null;
-      setLastDeleted(target);
+      if (target) {
+        setLastDeleted(target);
+        setIsDeleted(true);
+      }
       return prev.filter(t => t.id !== id);
     });
   }, []);
 
   const undoDelete = useCallback(() => {
-    if (!lastDeleted) return;
+    if (!lastDeleted || !isDeleted) return;
     setTasks(prev => [...prev, lastDeleted]);
     setLastDeleted(null);
+    // Fix: added isDeleted Flag
+    setIsDeleted(false)
   }, [lastDeleted]);
 
-  return { tasks, loading, error, derivedSorted, metrics, lastDeleted, addTask, updateTask, deleteTask, undoDelete };
+  // Fix: written close undo delte logic
+  const closeUndoDelete = useCallback(() => {
+    setLastDeleted(null)
+    setIsDeleted(false)
+  },[])
+
+  return { tasks, loading, error, derivedSorted, metrics, lastDeleted, addTask, updateTask, deleteTask, undoDelete, closeUndoDelete };
 }
 
 
