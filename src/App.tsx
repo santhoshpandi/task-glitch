@@ -42,7 +42,7 @@ function AppContent() {
     });
   }, [derivedSorted, q, fStatus, fPriority]);
 
-  const handleAdd = useCallback((payload: Omit<Task,  'id' | 'createdAt' | 'completedAt'>) => {
+  const handleAdd = useCallback((payload: Omit<Task,  'id'>) => {
     addTask(payload);
     setActivity(prev => [createActivity('add', `Added: ${payload.title}`), ...prev].slice(0, 50));
   }, [addTask, createActivity]);

@@ -112,10 +112,9 @@ export function useTasks(): UseTasksState {
     setTasks(prev => {
       const id = task.id ?? crypto.randomUUID();
       const timeTaken = task.timeTaken <= 0 ? 1 : task.timeTaken; // auto-correct
-      const createdAt = new Date().toISOString();
       const status = task.status;
-      const completedAt = status === 'Done' ? createdAt : undefined;
-      return [...prev, { ...task, id, timeTaken, createdAt, completedAt }];
+      const completedAt = status === 'Done' ? task.createdAt : undefined;
+      return [...prev, { ...task, id, timeTaken, completedAt }];
     });
   }, []);
 
