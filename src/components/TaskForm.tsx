@@ -83,7 +83,7 @@ export default function TaskForm({ open, onClose, onSubmit, existingTitles, init
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm" disableRestoreFocus>
       <DialogTitle>{initial ? 'Edit Task' : 'Add Task'}</DialogTitle>
       <DialogContent>
         <Stack spacing={2} mt={1}>
