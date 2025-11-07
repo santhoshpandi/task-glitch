@@ -9,18 +9,22 @@ interface Props {
 export default function ChartsDashboard({ tasks }: Props) {
   const revenueByPriority = ['High', 'Medium', 'Low'].map(p => ({
     priority: p,
-    revenue: tasks.filter(t => t.priority === (p as any)).reduce((s, t) => s + t.revenue, 0),
+    revenue: tasks.filter(t => t.priority === (p as any)).reduce((s, t) => s + (t.revenue || 0), 0),
   }));
   const revenueByStatus = ['Todo', 'In Progress', 'Done'].map(s => ({
     status: s,
-    revenue: tasks.filter(t => t.status === (s as any)).reduce((s2, t) => s2 + t.revenue, 0),
+    revenue: tasks.filter(t => t.status === (s as any)).reduce((s2, t) => s2 + (t.revenue || 0), 0),
   }));
-  // Injected bug: assume numeric ROI across the board; mis-bucket null/NaN
+
+  // Fix: Handling NAN and null bucketes
+  const validTasks = tasks.filter(t => typeof t.roi === 'number' && isFinite(t.roi as number));
+
+
   const roiBuckets = [
-    { label: '<200', count: tasks.filter(t => (t.roi as number) < 200).length },
-    { label: '200-500', count: tasks.filter(t => (t.roi as number) >= 200 && (t.roi as number) <= 500).length },
-    { label: '>500', count: tasks.filter(t => (t.roi as number) > 500).length },
-    { label: 'N/A', count: tasks.filter(t => (t.roi as number) < 0).length },
+    { label: '<200', count: validTasks.filter(t => (t.roi as number) < 200).length },
+    { label: '200-500', count: validTasks.filter(t => (t.roi as number) >= 200 && (t.roi as number) <= 500).length },
+    { label: '>500', count: validTasks.filter(t => (t.roi as number) > 500).length },
+    { label: 'N/A', count: tasks.length - validTasks.length },
   ];
 
   return (

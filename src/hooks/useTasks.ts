@@ -69,7 +69,6 @@ export function useTasks(): UseTasksState {
     if (fetchedRef.current) return;
     fetchedRef.current = true;
 
-    console.log('loading..');
     setLoading(true);
 
     async function load() {
