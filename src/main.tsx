@@ -6,12 +6,10 @@ import { appTheme } from './theme';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
     <ThemeProvider theme={appTheme}>
       <CssBaseline />
       <App />
     </ThemeProvider>
-  </React.StrictMode>
 );
 
 

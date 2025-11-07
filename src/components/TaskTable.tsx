@@ -59,7 +59,7 @@ export default function TaskTable({ tasks, onAdd, onUpdate, onDelete }: Props) {
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
+            <TableBody key={1}>
               {tasks.map(t => (
                 <TableRow key={t.id} hover onClick={() => setDetails(t)} sx={{ cursor: 'pointer' }}>
                   <TableCell>
