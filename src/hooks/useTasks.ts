@@ -76,9 +76,9 @@ export function useTasks(): UseTasksState {
       try {
         const res = await fetch('/tasks.json');
         if (!res.ok) throw new Error(`Failed to load tasks.json (${res.status})`);
-        const data = await res.json();
+        const data = (await res.json()) as any[];
         const normalized: Task[] = normalizeTasks(data);
-        const finalData = normalized.length > 0 ? normalized : generateSalesTasks(50);
+        let finalData = normalized.length > 0 ? normalized : generateSalesTasks(50);
         setTasks(finalData);
       } catch (e: any) {
         setError(e?.message ?? 'Failed to load tasks');
